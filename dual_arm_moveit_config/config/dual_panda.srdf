@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot name="dual_panda">
+    <!-- 1. 规划组 -->
+    <group name="panda_left">
+        <chain base_link="panda_left_link0" tip_link="panda_left_link8"/>
+    </group>
+    <group name="panda_right">
+        <chain base_link="panda_right_link0" tip_link="panda_right_link8"/>
+    </group>
+    <group name="hand_left">
+        <link name="panda_left_hand"/><link name="panda_left_leftfinger"/><link name="panda_left_rightfinger"/>
+    </group>
+    <group name="hand_right">
+        <link name="panda_right_hand"/><link name="panda_right_leftfinger"/><link name="panda_right_rightfinger"/>
+    </group>
+    <group name="dual_arms">
+        <group name="panda_left"/><group name="panda_right"/>
+    </group>
+
+    <!-- 2. 姿态：自然下垂 (保持你现在的正确姿态) -->
+    <group_state name="home" group="dual_arms">
+        <joint name="panda_left_joint1" value="0.0"/>
+        <joint name="panda_left_joint2" value="-0.785"/>
+        <joint name="panda_left_joint3" value="0.0"/>
+        <joint name="panda_left_joint4" value="-2.356"/>
+        <joint name="panda_left_joint5" value="0.0"/>
+        <joint name="panda_left_joint6" value="1.571"/>
+        <joint name="panda_left_joint7" value="0.785"/>
+        <joint name="panda_right_joint1" value="0.0"/>
+        <joint name="panda_right_joint2" value="-0.785"/>
+        <joint name="panda_right_joint3" value="0.0"/>
+        <joint name="panda_right_joint4" value="-2.356"/>
+        <joint name="panda_right_joint5" value="0.0"/>
+        <joint name="panda_right_joint6" value="1.571"/>
+        <joint name="panda_right_joint7" value="0.785"/>
+    </group_state>
+
+    <!-- 3. 末端 -->
+    <end_effector name="left_ee" parent_link="panda_left_link8" group="hand_left" parent_group="panda_left"/>
+    <end_effector name="right_ee" parent_link="panda_right_link8" group="hand_right" parent_group="panda_right"/>
+
+    <!-- ======================================================================== -->
+    <!-- ☢️ 核爆级屏蔽区：强制关闭底座和肩膀区域的所有红色报警 ☢️ -->
+    <!-- ======================================================================== -->
+
+    <!-- 1. 屏蔽左臂底座与环境/自身的所有接触 -->
+    <disable_collisions link1="panda_left_link0" link2="base_link" reason="User"/> <!-- 强制 -->
+    <disable_collisions link1="panda_left_link0" link2="panda_left_link1" reason="User"/>
+    <disable_collisions link1="panda_left_link0" link2="panda_left_link2" reason="User"/>
+    <disable_collisions link1="panda_left_link0" link2="panda_left_link3" reason="User"/>
+    <disable_collisions link1="panda_left_link0" link2="panda_left_link4" reason="User"/>
+    
+    <!-- 2. 屏蔽左臂 Link1 (肩膀) 的所有接触 -->
+    <disable_collisions link1="panda_left_link1" link2="base_link" reason="User"/>
+    <disable_collisions link1="panda_left_link1" link2="panda_left_link2" reason="User"/>
+    <disable_collisions link1="panda_left_link1" link2="panda_left_link3" reason="User"/>
+    <disable_collisions link1="panda_left_link1" link2="panda_left_link4" reason="User"/>
+
+    <!-- 3. 屏蔽右臂底座与环境/自身的所有接触 -->
+    <disable_collisions link1="panda_right_link0" link2="base_link" reason="User"/> <!-- 强制 -->
+    <disable_collisions link1="panda_right_link0" link2="panda_right_link1" reason="User"/>
+    <disable_collisions link1="panda_right_link0" link2="panda_right_link2" reason="User"/>
+    <disable_collisions link1="panda_right_link0" link2="panda_right_link3" reason="User"/>
+    <disable_collisions link1="panda_right_link0" link2="panda_right_link4" reason="User"/>
+
+    <!-- 4. 屏蔽右臂 Link1 (肩膀) 的所有接触 -->
+    <disable_collisions link1="panda_right_link1" link2="base_link" reason="User"/>
+    <disable_collisions link1="panda_right_link1" link2="panda_right_link2" reason="User"/>
+    <disable_collisions link1="panda_right_link1" link2="panda_right_link3" reason="User"/>
+    <disable_collisions link1="panda_right_link1" link2="panda_right_link4" reason="User"/>
+
+    <!-- 5. 屏蔽左右臂之间的底座互殴 -->
+    <disable_collisions link1="panda_left_link0" link2="panda_right_link0" reason="User"/>
+    <disable_collisions link1="panda_left_link0" link2="panda_right_link1" reason="User"/>
+    <disable_collisions link1="panda_left_link0" link2="panda_right_link2" reason="User"/>
+    <disable_collisions link1="panda_left_link1" link2="panda_right_link0" reason="User"/>
+    <disable_collisions link1="panda_left_link1" link2="panda_right_link1" reason="User"/>
+    <disable_collisions link1="panda_left_link1" link2="panda_right_link2" reason="User"/>
+
+    <!-- ================= 常规屏蔽区 (保留以防万一) ================= -->
+    <disable_collisions link1="panda_left_link2" link2="panda_left_link3" reason="Adjacent"/>
+    <disable_collisions link1="panda_left_link2" link2="panda_left_link4" reason="Never"/>
+    <disable_collisions link1="panda_left_link3" link2="panda_left_link4" reason="Adjacent"/>
+    <disable_collisions link1="panda_left_link3" link2="panda_left_link5" reason="Never"/>
+    <disable_collisions link1="panda_left_link3" link2="panda_left_link6" reason="Never"/>
+    <disable_collisions link1="panda_left_link3" link2="panda_left_link7" reason="Never"/>
+    <disable_collisions link1="panda_left_link4" link2="panda_left_link5" reason="Adjacent"/>
+    <disable_collisions link1="panda_left_link4" link2="panda_left_link6" reason="Never"/>
+    <disable_collisions link1="panda_left_link4" link2="panda_left_link7" reason="Never"/>
+    <disable_collisions link1="panda_left_link4" link2="panda_left_link8" reason="Never"/>
+    <disable_collisions link1="panda_left_link5" link2="panda_left_link6" reason="Adjacent"/>
+    <disable_collisions link1="panda_left_link5" link2="panda_left_link7" reason="Never"/>
+    <disable_collisions link1="panda_left_link6" link2="panda_left_link7" reason="Adjacent"/>
+    <disable_collisions link1="panda_left_link6" link2="panda_left_link8" reason="Never"/>
+    <disable_collisions link1="panda_left_link6" link2="panda_left_hand" reason="Never"/>
+    <disable_collisions link1="panda_left_link7" link2="panda_left_link8" reason="Adjacent"/>
+    <disable_collisions link1="panda_left_link7" link2="panda_left_hand" reason="Never"/>
+    <disable_collisions link1="panda_left_link8" link2="panda_left_hand" reason="Adjacent"/>
+    <disable_collisions link1="panda_left_hand" link2="panda_left_leftfinger" reason="Adjacent"/>
+    <disable_collisions link1="panda_left_hand" link2="panda_left_rightfinger" reason="Adjacent"/>
+    <disable_collisions link1="panda_left_leftfinger" link2="panda_left_rightfinger" reason="Always"/>
+    <disable_collisions link1="panda_left_link8" link2="panda_left_leftfinger" reason="Always"/>
+    <disable_collisions link1="panda_left_link8" link2="panda_left_rightfinger" reason="Always"/>
+    <disable_collisions link1="panda_left_hand" link2="panda_left_link8" reason="Always"/>
+    <disable_collisions link1="panda_left_leftfinger" link2="panda_left_hand" reason="Always"/>
+    <disable_collisions link1="panda_left_rightfinger" link2="panda_left_hand" reason="Always"/>
+    <disable_collisions link1="panda_left_leftfinger" link2="panda_left_link8" reason="Always"/>
+        <!-- 补充左夹具彻底自碰撞屏蔽 -->
+        <disable_collisions link1="panda_left_hand" link2="panda_left_leftfinger" reason="Always"/>
+        <disable_collisions link1="panda_left_hand" link2="panda_left_rightfinger" reason="Always"/>
+        <disable_collisions link1="panda_left_leftfinger" link2="panda_left_rightfinger" reason="Always"/>
+        <disable_collisions link1="panda_left_hand" link2="panda_left_link8" reason="Always"/>
+        <disable_collisions link1="panda_left_leftfinger" link2="panda_left_link8" reason="Always"/>
+        <disable_collisions link1="panda_left_rightfinger" link2="panda_left_link8" reason="Always"/>
+    <disable_collisions link1="panda_left_rightfinger" link2="panda_left_link8" reason="Always"/>
+
+    <!-- 右臂常规 -->
+    <disable_collisions link1="panda_right_link2" link2="panda_right_link3" reason="Adjacent"/>
+    <disable_collisions link1="panda_right_link2" link2="panda_right_link4" reason="Never"/>
+    <disable_collisions link1="panda_right_link3" link2="panda_right_link4" reason="Adjacent"/>
+    <disable_collisions link1="panda_right_link3" link2="panda_right_link5" reason="Never"/>
+    <disable_collisions link1="panda_right_link3" link2="panda_right_link6" reason="Never"/>
+    <disable_collisions link1="panda_right_link3" link2="panda_right_link7" reason="Never"/>
+    <disable_collisions link1="panda_right_link4" link2="panda_right_link5" reason="Adjacent"/>
+    <disable_collisions link1="panda_right_link4" link2="panda_right_link6" reason="Never"/>
+    <disable_collisions link1="panda_right_link4" link2="panda_right_link7" reason="Never"/>
+    <disable_collisions link1="panda_right_link4" link2="panda_right_link8" reason="Never"/>
+    <disable_collisions link1="panda_right_link5" link2="panda_right_link6" reason="Adjacent"/>
+    <disable_collisions link1="panda_right_link5" link2="panda_right_link7" reason="Never"/>
+    <disable_collisions link1="panda_right_link6" link2="panda_right_link7" reason="Adjacent"/>
+    <disable_collisions link1="panda_right_link6" link2="panda_right_link8" reason="Never"/>
+    <disable_collisions link1="panda_right_link6" link2="panda_right_hand" reason="Never"/>
+    <disable_collisions link1="panda_right_link7" link2="panda_right_link8" reason="Adjacent"/>
+    <disable_collisions link1="panda_right_link7" link2="panda_right_hand" reason="Never"/>
+    <disable_collisions link1="panda_right_link8" link2="panda_right_hand" reason="Adjacent"/>
+    <disable_collisions link1="panda_right_hand" link2="panda_right_leftfinger" reason="Adjacent"/>
+    <disable_collisions link1="panda_right_hand" link2="panda_right_rightfinger" reason="Adjacent"/>
+    <disable_collisions link1="panda_right_leftfinger" link2="panda_right_rightfinger" reason="Always"/>
+    <disable_collisions link1="panda_right_link8" link2="panda_right_leftfinger" reason="Always"/>
+    <disable_collisions link1="panda_right_link8" link2="panda_right_rightfinger" reason="Always"/>
+    <disable_collisions link1="panda_right_hand" link2="panda_right_link8" reason="Always"/>
+    <disable_collisions link1="panda_right_leftfinger" link2="panda_right_hand" reason="Always"/>
+    <disable_collisions link1="panda_right_rightfinger" link2="panda_right_hand" reason="Always"/>
+        <!-- 补充右夹具彻底自碰撞屏蔽 -->
+        <disable_collisions link1="panda_right_hand" link2="panda_right_leftfinger" reason="Always"/>
+        <disable_collisions link1="panda_right_hand" link2="panda_right_rightfinger" reason="Always"/>
+        <disable_collisions link1="panda_right_leftfinger" link2="panda_right_rightfinger" reason="Always"/>
+        <disable_collisions link1="panda_right_hand" link2="panda_right_link8" reason="Always"/>
+        <disable_collisions link1="panda_right_leftfinger" link2="panda_right_link8" reason="Always"/>
+        <disable_collisions link1="panda_right_rightfinger" link2="panda_right_link8" reason="Always"/>
+    <disable_collisions link1="panda_right_leftfinger" link2="panda_right_link8" reason="Always"/>
+    <disable_collisions link1="panda_right_rightfinger" link2="panda_right_link8" reason="Always"/>
+
+
+</robot>

@@ -1,0 +1,25 @@
+controller_names:
+  - fake_panda_left_controller
+  - fake_panda_right_controller
+
+fake_panda_left_controller:
+  type: $(arg fake_execution_type)
+  joints:
+    - panda_left_joint1
+    - panda_left_joint2
+    - panda_left_joint3
+    - panda_left_joint4
+    - panda_left_joint5
+    - panda_left_joint6
+    - panda_left_joint7
+
+fake_panda_right_controller:
+  type: $(arg fake_execution_type)
+  joints:
+    - panda_right_joint1
+    - panda_right_joint2
+    - panda_right_joint3
+    - panda_right_joint4
+    - panda_right_joint5
+    - panda_right_joint6
+    - panda_right_joint7
